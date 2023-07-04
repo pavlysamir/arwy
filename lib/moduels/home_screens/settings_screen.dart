@@ -1,5 +1,6 @@
 import 'package:arwyapp/layout/cupit/home_cubit.dart';
 import 'package:arwyapp/moduels/LoginScreen/LogiScreen.dart';
+import 'package:arwyapp/moduels/home_screens/chat_Screen.dart';
 import 'package:arwyapp/shared/components/Components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,10 +48,17 @@ class SettingsScreen extends StatelessWidget {
                     Spacer(),
                     LiteRollingSwitch(
                       width: 100,
-                      onTap: () {},
+                      onTap: () {
+                      },
                       onDoubleTap: () {},
                       onSwipe: () {},
                       onChanged: (bool position) {
+                        if(position == false){
+                          HomeCubit.get(context).auto = 0;
+                          HomeCubit.get(context).writeDataOnDb(auto: HomeCubit.get(context).auto );
+                        }else{
+                          HomeCubit.get(context).writeDataOnDb(auto: HomeCubit.get(context).auto );
+                        }
                         HomeCubit.get(context).ChangeColorOfSwich();
                         print(position);
                       },
@@ -66,7 +74,12 @@ class SettingsScreen extends StatelessWidget {
                 height: 30,
               ),
               InkWell(
-                onTap: (){},
+                onTap: (){
+                  NavigateTo(
+                    context,
+                      ChatScreen(),
+                  );
+                },
                 child: Container(
                     child: Row(
                       children: [
@@ -98,7 +111,9 @@ class SettingsScreen extends StatelessWidget {
                   minWidth: double.infinity,
                   height: 50,
                   clipBehavior: Clip.antiAlias,
-                  onPressed: (){
+                  onPressed: ()
+                  {
+                    HomeCubit.get(context).signOut();
                     NavigateTo(context,LoginScreen());
                   },
                   color: Colors.black,

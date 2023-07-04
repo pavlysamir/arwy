@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "560343706695",
+    "firebase_url": "https://esp8266-a2827-default-rtdb.firebaseio.com",
+    "project_id": "esp8266-a2827",
+    "storage_bucket": "esp8266-a2827.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560343706695:android:f78f043af4ffd54f271562",
+        "android_client_info": {
+          "package_name": "com.example.arwyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "560343706695-nck4jcv30lr00bg6nf944beht03t1g20.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSSNSbaKdf9i5p_kHqsSsFJqib_JvFyZI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "560343706695-nck4jcv30lr00bg6nf944beht03t1g20.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

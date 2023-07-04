@@ -1,7 +1,9 @@
 import 'package:arwyapp/layout/home_screen.dart';
 import 'package:arwyapp/moduels/LoginScreen/login_cubit.dart';
+import 'package:arwyapp/network/local/cashe_helper.dart';
 import 'package:arwyapp/shared/components/Components.dart';
 import 'package:arwyapp/shared/constant.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,7 +17,17 @@ class LoginScreen extends StatelessWidget {
     return BlocProvider(
   create: (context) => LoginCubit(),
   child: BlocConsumer<LoginCubit, LoginState>(
-  listener: (context, state) {},
+  listener: (context, state) {
+    if(state is LoginSuccessState){
+      showToast(messege: 'Done' ,colorToast: ColorStates.SUCCESS);
+      CasheHelper.SaveData(key: 'uId', value: state.uId ).then((value) {
+        NavigateAndFinish(context,HomeScreen() );
+      });
+    }
+    else if(state is LoginErrorState){
+      showToast(messege: '${state.error}' ,colorToast: ColorStates.ERROR);
+    }
+  },
   builder: (context, state) {
     return Scaffold(
       body: SingleChildScrollView(
@@ -50,13 +62,11 @@ class LoginScreen extends StatelessWidget {
                           fontSize: 12,
                         ),
                         fillColor: Colors.white60,
+                        hintText: 'ID',
+                        hintStyle: TextStyle(color: Colors.black),
                         filled: true,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        label: Text(
-                          'ID',
-                          style: TextStyle(color: Colors.black),
                         ),
                         prefixIcon:
                             Icon(Icons.person_outline, color: Colors.black),
@@ -76,6 +86,8 @@ class LoginScreen extends StatelessWidget {
                         }
                       },
                       decoration: InputDecoration(
+                        hintText: 'password',
+                        hintStyle: TextStyle(color: Colors.black),
                         errorStyle: TextStyle(
                           color: Colors.red[400],
                           fontWeight: FontWeight.bold,
@@ -85,10 +97,6 @@ class LoginScreen extends StatelessWidget {
                         filled: true,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        label: Text(
-                          'Password',
-                          style: TextStyle(color: Colors.black),
                         ),
                         prefixIcon: Icon(
                           Icons.lock_open_outlined,
@@ -108,19 +116,29 @@ class LoginScreen extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            NavigateAndFinish(context, HomeScreen());
-                          }
-                        },
-                        child: Text(
-                          'Login',
-                          style: TextStyle(fontSize: 24),
-                        ),
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.green)),
+                      child: ConditionalBuilder(
+                        condition: state is! LoginLoadingState ,
+                        builder: (context) {
+                          return ElevatedButton(
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              LoginCubit.get(context).loginUser
+                                (email: IdController.text,password: PasswordController.text);
+                              // NavigateAndFinish(context, HomeScreen());
+                            }
+                          },
+                          child: Text(
+                            'Login',
+                            style: TextStyle(fontSize: 24),
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor:
+                              MaterialStateProperty.all(Colors.green)),
+                        );
+                          },
+                        fallback:(context){
+                          return Center(child: CircularProgressIndicator());
+                        } ,
                       ),
                     )
                   ],

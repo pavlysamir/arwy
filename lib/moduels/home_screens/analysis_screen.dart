@@ -29,19 +29,20 @@ class AnalysisScreen extends StatelessWidget {
                   height: 40,
                 ),
                 Row(
-                  children: [
-                    containerOfstats(
-                        degree: '24',
-                        icon: BoxedIcon(WeatherIcons.day_sunny, size: 16,),
-                        iconName: 'Weather'
-                    ),
-                    SizedBox(width: 15,),
-                    containerOfstats(
-                        degree: '24',
-                        icon: BoxedIcon(WeatherIcons.thermometer, size: 16,),
-                        iconName: 'Soil temp'
-                    ),
-                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  containerOfstats(
+                      degree: '24',//'${HomeCubit.get(context).weather}', //اعمل كدا فى الباقى
+                      icon: BoxedIcon(WeatherIcons.day_sunny, size: 16,),
+                      iconName: 'Weather'
+                  ),
+                  SizedBox(width: 15,),
+                  containerOfstats(
+                      degree: '${HomeCubit.get(context).weather}',
+                      icon: BoxedIcon(WeatherIcons.thermometer, size: 16,),
+                      iconName: 'Soil temp'
+                  ),
+                ],
                 ),
                 SizedBox(
                   height: 30,
@@ -52,7 +53,7 @@ class AnalysisScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       progressIndecator(
-                          degree: '20',
+                          degree: '${HomeCubit.get(context).humidity}',
                           valueOfIndecator: 0.2,
                           color: Colors.blue,
                           icon: BoxedIcon(WeatherIcons.humidity, size: 14,),
@@ -78,7 +79,7 @@ class AnalysisScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       progressIndecator(
-                          degree: '20',
+                          degree:'${HomeCubit.get(context).waterFlow}',
                           valueOfIndecator: 0.2,
                           color: Colors.green,
                           icon: BoxedIcon(WeatherIcons.flood, size: 14,),
@@ -144,6 +145,7 @@ class AnalysisScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(10.0),
                         child: FloatingActionButton(onPressed: () {
                           HomeCubit.get(context).ChangeColorContainer();
+                          //HomeCubit.get(context).writeDataOnDb();
                         },
                           child: Icon(
                             Icons.power_settings_new,
